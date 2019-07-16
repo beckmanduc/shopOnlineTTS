@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnlineTTS.Data.Repositories
 {
-    public interface ISlideRepository
+    public interface ISlideRepository : IRepository<Slide>
     {
 
     }

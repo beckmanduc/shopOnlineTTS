@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnlineTTS.Data.Repositories
 {
-    public interface IProductRepository
+    public interface IProductRepository : IRepository<Product>
     {
 
     }
