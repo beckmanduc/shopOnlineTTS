@@ -26,18 +26,9 @@ namespace ShopOnlineTTS.Web.Api
         {
             return CreateHttpResponse(request, () =>
             {
-                HttpResponseMessage response = null;
-                if (ModelState.IsValid)
-                {
-                    request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-                }
-                else
-                {
 
-                    var listCategory = _postCategoryService.GetAll();
-                    response = request.CreateResponse(HttpStatusCode.OK, listCategory);
-
-                }
+                var listCategory = _postCategoryService.GetAll();
+                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, listCategory);
                 return response;
             });
         }
@@ -87,7 +78,7 @@ namespace ShopOnlineTTS.Web.Api
                 return response;
             });
         }
-        public HttpResponseMessage Delete(HttpRequestMessage request,int id)
+        public HttpResponseMessage Delete(HttpRequestMessage request, int id)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -108,6 +99,6 @@ namespace ShopOnlineTTS.Web.Api
                 return response;
             });
         }
-   
+
     }
 }
