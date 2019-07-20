@@ -1,12 +1,15 @@
-﻿using ShopOnlineTTS.Model.Models;
+﻿using AutoMapper;
+using ShopOnlineTTS.Model.Models;
 using ShopOnlineTTS.Service;
 using ShopOnlineTTS.Web.Infrastructure.Core;
+using ShopOnlineTTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using ShopOnlineTTS.Web.Infrastructure.Extensions;
 
 namespace ShopOnlineTTS.Web.Api
 {
@@ -28,13 +31,16 @@ namespace ShopOnlineTTS.Web.Api
             {
 
                 var listCategory = _postCategoryService.GetAll();
-                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, listCategory);
+
+                var listPostCategoryVm = Mapper.Map<List<PostCategoryViewModel>>(listCategory);
+
+                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, listPostCategoryVm);
                 return response;
             });
         }
 
         [Route("add")]
-        public HttpResponseMessage Post(HttpRequestMessage request, PostCategory postCategory)
+        public HttpResponseMessage Post(HttpRequestMessage request, PostCategoryViewModel postCategoryVm)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -45,8 +51,10 @@ namespace ShopOnlineTTS.Web.Api
                 }
                 else
                 {
+                    PostCategory newPostCategory = new PostCategory();
+                    newPostCategory.UpdatePostCategory(postCategoryVm);
 
-                    var category = _postCategoryService.Add(postCategory);
+                    var category = _postCategoryService.Add(newPostCategory);
                     _postCategoryService.Save();
 
                     response = request.CreateResponse(HttpStatusCode.Created, category);
@@ -57,7 +65,7 @@ namespace ShopOnlineTTS.Web.Api
         }
 
         [Route("update")]
-        public HttpResponseMessage Put(HttpRequestMessage request, PostCategory postCategory)
+        public HttpResponseMessage Put(HttpRequestMessage request, PostCategoryViewModel postCategoryVm)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -68,8 +76,9 @@ namespace ShopOnlineTTS.Web.Api
                 }
                 else
                 {
-
-                    _postCategoryService.Update(postCategory);
+                    var postCategoryDb = _postCategoryService.GetById(postCategoryVm.ID);
+                    postCategoryDb.UpdatePostCategory(postCategoryVm);
+                    _postCategoryService.Update(postCategoryDb);
                     _postCategoryService.Save();
 
                     response = request.CreateResponse(HttpStatusCode.OK);
