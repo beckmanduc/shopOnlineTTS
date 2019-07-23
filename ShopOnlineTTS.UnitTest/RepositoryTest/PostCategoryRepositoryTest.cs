@@ -24,12 +24,14 @@ namespace ShopOnlineTTS.UnitTest.RepositoryTest
             objRepository = new PostCategoryRepository(dbFactory);
             unitOfWork = new UnitOfWork(dbFactory);
         }
+
         [TestMethod]
         public void PostCategory_Repository_GetAll()
         {
             var list = objRepository.GetAll().ToList();
-            Assert.AreEqual(8, list.Count);
+            Assert.AreEqual(3, list.Count);
         }
+
         [TestMethod]
         public void PostCategory_Repository_Create()
         {
@@ -42,8 +44,8 @@ namespace ShopOnlineTTS.UnitTest.RepositoryTest
             unitOfWork.Commit();
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(8, result.ID);
+            Assert.AreEqual(10, result.ID);
         }
-    }
 
+    }
 }

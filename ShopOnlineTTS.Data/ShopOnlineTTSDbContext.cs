@@ -1,4 +1,5 @@
-﻿using ShopOnlineTTS.Model.Models;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using ShopOnlineTTS.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnlineTTS.Data
 {
-    public class ShopOnlineTTSDbContext : DbContext
+    public class ShopOnlineTTSDbContext : IdentityDbContext<ApplicationUser>
     {
         public ShopOnlineTTSDbContext() : base("ShopOnlineTTSConnection")
         {
@@ -37,8 +38,15 @@ namespace ShopOnlineTTS.Data
         public DbSet<VisitorStatistic> VisitorStatistics { set; get; }
         public DbSet<Error> Errors { set; get; }
 
+        public static ShopOnlineTTSDbContext Create()
+        {
+            return new ShopOnlineTTSDbContext();
+        }
+
         protected override void OnModelCreating(DbModelBuilder builder)
         {
+            builder.Entity<IdentityUserRole>().HasKey(i => new { i.UserId, i.RoleId });
+            builder.Entity<IdentityUserLogin>().HasKey(i => i.UserId);
 
         }
     }
