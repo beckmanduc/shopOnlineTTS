@@ -15,6 +15,7 @@ using System.Web.Script.Serialization;
 namespace ShopOnlineTTS.Web.Api
 {
     [RoutePrefix("api/product")]
+    [Authorize]
     public class ProductController : ApiControllerBase
     {
         #region Initialize
@@ -102,6 +103,7 @@ namespace ShopOnlineTTS.Web.Api
                     var newProduct = new Product();
                     newProduct.UpdateProduct(productCategoryVm);
                     newProduct.CreatedDate = DateTime.Now;
+                    newProduct.CreatedBy = User.Identity.Name;
                     _productService.Add(newProduct);
                     _productService.Save();
 
